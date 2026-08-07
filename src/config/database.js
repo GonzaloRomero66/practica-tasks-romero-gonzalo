@@ -2,7 +2,7 @@ import { Sequelize } from "sequelize";
 import dotenv from 'dotenv'
 
 dotenv.config()
-const sequelize = new Sequelize(
+export const sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
     process.env.DB_PASSWORD,
@@ -14,7 +14,7 @@ const sequelize = new Sequelize(
 export const startDB = async () => {
     try {
         await sequelize.authenticate();
-        await sequelize.sync({force: true});
+        await sequelize.sync();
         console.log("Tu base de datos esta en perfecto funcionamiento")
     }
     catch (error) {

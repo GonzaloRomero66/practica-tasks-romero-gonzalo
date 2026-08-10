@@ -146,8 +146,9 @@ export const actualizarTarea = async (req, res) => {
      catch (error) {
         return res.status(500).json({
             message: "Error en el servidor"
-        });
+        })
     }
+};
 export const eliminarTarea = async (req, res) => {
     try{
         const {id} = req.params;
@@ -161,12 +162,9 @@ export const eliminarTarea = async (req, res) => {
         return res.status(200).json({
             message: "Tarea eliminada correctamente"
         })
-    }
-    catch (error) {
+    }catch (error) {
         return res.status(500).json({
             message: "Error en el servidor"
         });
-}
+    }
 };
-
-}

@@ -7,12 +7,12 @@ import {
     eliminarUsuario
 } from "../controllers/userController.js"
 
-const router = express.router();
+const router = express.Router();
 
 router.get("/", obtenerTodosLosUsuarios)
 router.get("/:id", ObtenerUsuarioPorId)
 router.post("/", crearUsuario)
-router.pot("/:id", actualizarUsuario)
+router.put("/:id", actualizarUsuario)
 router.delete("/:id", eliminarUsuario)
 
 export default router;

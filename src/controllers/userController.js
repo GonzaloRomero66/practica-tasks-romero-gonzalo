@@ -42,9 +42,9 @@ export const crearUsuario = async (req, res) => {
                 message: "El nombre no debe estar vacio"
             });
         }
-        if(name.length > 20){
+        if(name.length > 50){
             return res.status(400).json({
-                message: "El nombre debe ser menor a 20 caracteres"
+                message: "El nombre debe ser menor a 50 caracteres"
             });
         }
         const NombreBuscado = await UserModel.findOne({
@@ -65,9 +65,9 @@ export const crearUsuario = async (req, res) => {
                 message: "El email no puede estar vacia"
             });
         }
-        if(email.length > 20){
+        if(email.length > 100){
             return res.status(400).json({
-                message: "El email debe ser menor a 20 caracteres"
+                message: "El email debe ser menor a 100 caracteres"
             })
         }
         if (typeof password !== "string"){
@@ -120,9 +120,9 @@ export const actualizarUsuario = async (req, res) => {
                 message: "El nombre no puede estar vacio"
             })
         }
-        if(name.length > 20){
+        if(name.length > 50){
             return res.status(400).json({
-                message: "El nombre debe ser menor a 20 caracteres"
+                message: "El nombre debe ser menor a 50 caracteres"
             })
         }
         if(name !== UsuariosObtenidos.name){
@@ -147,9 +147,9 @@ export const actualizarUsuario = async (req, res) => {
                 message: "El email no puede estar vacia"
             });
         }
-        if(email.length > 20)
+        if(email.length > 100)
             return res.status(400).json({
-                message: "El email debe ser menor de 20 caracteres"
+                message: "El email debe ser menor de 100 caracteres"
             })
         }
          if (password !== undefined){

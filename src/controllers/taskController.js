@@ -93,12 +93,15 @@ export const actualizarTarea = async (req, res) => {
     try {
         const {id} = req.params
         const { title, description, isComplete } = req.body;
+
         const TareasObtenidas = await TaskModel.findByPk(id)
+
         if(!TareasObtenidas){
             return res.status(404).json({
                 message: "No existe esa tarea"
             });
         }
+
         if(title !== undefined){
         if(title !== TareasObtenidas.title){
            const tituloBuscado = await TaskModel.findOne({
@@ -141,13 +144,16 @@ export const actualizarTarea = async (req, res) => {
          });
          return res.status(200).json({
             message: "Tarea actualizada correctamente"
-         })
-    } 
+         });
+    }
      catch (error) {
         return res.status(500).json({
             message: "Error en el servidor"
         });
     }
+};
+    
+
 export const eliminarTarea = async (req, res) => {
     try{
         const {id} = req.params;
@@ -169,4 +175,3 @@ export const eliminarTarea = async (req, res) => {
 }
 };
 
-}

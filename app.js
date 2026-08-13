@@ -9,8 +9,8 @@ import { sequelize } from "./src/config/database.js"
 
 const app = express()
 app.use(express.json());
-app.use("user", userRoutes)
-app.use("task", taskRoutes)
+app.use("/user", userRoutes)
+app.use("/task", taskRoutes)
 
 console.log(process.env.PORT)
 const port = process.env.PORT

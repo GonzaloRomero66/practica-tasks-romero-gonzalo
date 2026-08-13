@@ -4,8 +4,7 @@ import { sequelize } from "../config/database.js"
 export const TaskModel = sequelize.define("task", {
     title: {
         type: DataTypes.STRING(100),
-        allowNull: false,
-        unique: true
+        allowNull: false
     },
     description: {
         type: DataTypes.STRING(100),
@@ -14,5 +13,12 @@ export const TaskModel = sequelize.define("task", {
     isComplete: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
+    },
+    UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false        
     }
 })
+
+
+

@@ -1,16 +1,19 @@
 import { TaskModel } from "../models/Task.js";
+import { UserModel } from "../models/User.js";
 export const obtenerTodasLasTareas = async (req, res) => {
     try {
-        const TareasObtenidas = await TaskModel.findAll()
+        const TareasObtenidas = await TaskModel.findAll({include: UserModel})
         return res.status(200).json(TareasObtenidas);
     } catch (error) {
-        res.status(500).json({ message: "Error en el servidor"})
+        res.status(500).json({ message: "Error en el servidor", error: error.message})
     }
 }
 export const ObtenerTareaPorId = async (req, res) => {
     try {
         const {id} = req.params;
-        const TareaEncontrada = await TaskModel.findByPk(id);
+        const TareaEncontrada = await TaskModel.findByPk(id,{
+            include: UserModel
+        });
 
         if(!TareaEncontrada) {
             return res.status(404).json({
@@ -28,7 +31,7 @@ export const ObtenerTareaPorId = async (req, res) => {
 }
 export const crearTarea = async (req, res) => {
     try {
-        const {title, description, isComplete} = req.body;
+        const {title, description, UserId, isComplete} = req.body;
 
         if(typeof title !== "string"){
             return res.status(400).json({
@@ -73,10 +76,22 @@ export const crearTarea = async (req, res) => {
                 message: "Tarea completada debe ser de tipo boolean (true / false)"
             })
         }
+        if(!UserId) {
+            return res.status(400).json({
+                message: "El usuario es obligatorio"
+            })
+        }
+        const UsuarioEncontrado = await UserModel.findByPk(UserId);
+        if(!UsuarioEncontrado){
+            return res.status(404).json({
+                message: "Usuario no existe"
+            })
+        }
 
         await TaskModel.create({
             title,
             description,
+            UserId,
             isComplete
         });
         return res.status(201).json({
@@ -85,16 +100,17 @@ export const crearTarea = async (req, res) => {
     }
     catch (error) {
         return res.status(500).json({
-            message: "Error en el servidor"
+            message: "Error en el servidor",
+            error: error.message
         })
     }
 }
 export const actualizarTarea = async (req, res) => {
     try {
         const {id} = req.params
-        const { title, description, isComplete } = req.body;
+        const { title, description, UserId, isComplete } = req.body;
 
-        const TareasObtenidas = await TaskModel.findByPk(id)
+        const TareasObtenidas = await TaskModel.findByPk(id, {include: UserModel})
 
         if(!TareasObtenidas){
             return res.status(404).json({
@@ -104,9 +120,9 @@ export const actualizarTarea = async (req, res) => {
 
         if(title !== undefined){
         if(title !== TareasObtenidas.title){
-           const tituloBuscado = await TaskModel.findOne({
+        const tituloBuscado = await TaskModel.findOne({
             where: {title}
-           })
+        })
         if (tituloBuscado){
             return res.status(400).json({
                 message: "El titulo ya existe"
@@ -130,23 +146,24 @@ export const actualizarTarea = async (req, res) => {
                 message: "La descripcion debe ser menor de 100 caracteres"
             })
         }
-         if (isComplete !== undefined){
+        if (isComplete !== undefined){
             if(typeof isComplete !== "boolean"){
                 return res.status(400).json({
                     message: "Tarea completada debe ser de tipo boolean (true / false)"
                 });
             }
-         }
-         await TareasObtenidas.update({
+        }
+        await TareasObtenidas.update({
             title,
             description,
+            UserId,
             isComplete
-         });
-         return res.status(200).json({
+        });
+        return res.status(200).json({
             message: "Tarea actualizada correctamente"
-         });
+        });
     }
-     catch (error) {
+    catch (error) {
         return res.status(500).json({
             message: "Error en el servidor"
         });
@@ -157,7 +174,7 @@ export const actualizarTarea = async (req, res) => {
 export const eliminarTarea = async (req, res) => {
     try{
         const {id} = req.params;
-        const TareaEncontrada = await TaskModel.findByPk(id);
+        const TareaEncontrada = await TaskModel.findByPk(id, {include: UserModel});
     if (!TareaEncontrada){
         return res.status(404).json({
             message: "No existe esa tarea"

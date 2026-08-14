@@ -1,7 +1,8 @@
 import { UserModel } from "../models/User.js";
+import { TaskModel } from "../models/Task.js";
 export const obtenerTodosLosUsuarios = async (req, res) => {
     try {
-        const UsuariosObtenidos = await UserModel.findAll()
+        const UsuariosObtenidos = await UserModel.findAll({include: TaskModel})
         return res.status(200).json(UsuariosObtenidos);
     } catch (error) {
         res.status(500).json({ message: "Error en el servidor"})

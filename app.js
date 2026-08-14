@@ -1,4 +1,5 @@
 import express from 'express'
+import "./relations.js"
 import dotenv from 'dotenv'
 import taskRoutes from "./src/routes/taskRoutes.js"
 import userRoutes from "./src/routes/userRoutes.js"

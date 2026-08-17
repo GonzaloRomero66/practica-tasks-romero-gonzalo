@@ -2,6 +2,7 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "../config/database.js";
 
 export const ProfeModel = sequelize.define("profesor", {
+    
      name: {
         type: DataTypes.STRING(100),
         allowNull: false
@@ -22,5 +23,12 @@ export const ProfeModel = sequelize.define("profesor", {
     UserId: {
         type: DataTypes.STRING(100),
         allowNull: false
+    }
+    },
+    {
+    defaultScope: {
+        attributes: {
+            exclude: ["password"]
+        }
     }
 })

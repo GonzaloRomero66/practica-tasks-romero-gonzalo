@@ -3,7 +3,7 @@ import { TaskModel } from "../models/Task.js";
 import { ProfeModel } from "../models/Profesores.js";
 export const obtenerTodosLosProfesores = async (req, res) => {
     try {
-        const ProfesoresObtenidos = await ProfeModel.findAll()
+        const ProfesoresObtenidos = await ProfeModel.findAll({attributes: {exclude: ["password"]}})
         return res.status(200).json(ProfesoresObtenidos);
     } catch (error) {
         res.status(500).json({ message: "Error en el servidor"})
@@ -12,7 +12,7 @@ export const obtenerTodosLosProfesores = async (req, res) => {
 export const ObtenerProfesorPorId = async (req, res) => {
     try {
         const {id} = req.params;
-        const ProfesorEncontrado = await ProfeModel.findByPk(id);
+        const ProfesorEncontrado = await ProfeModel.findByPk(id, {attributes: {exclude: ["password"]}});
 
         if(!ProfesorEncontrado) {
             return res.status(404).json({

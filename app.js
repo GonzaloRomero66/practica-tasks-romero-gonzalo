@@ -3,13 +3,14 @@ import "./relations.js"
 import dotenv from 'dotenv'
 import taskRoutes from "./src/routes/taskRoutes.js"
 import userRoutes from "./src/routes/userRoutes.js"
-
+import profeRoutes from "./src/routes/profesoresRoutes.js"
 dotenv.config()
 
 import { sequelize } from "./src/config/database.js"
 
 const app = express()
 app.use(express.json());
+app.use("/profesores", profeRoutes)
 app.use("/user", userRoutes)
 app.use("/task", taskRoutes)
 

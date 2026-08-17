@@ -1,8 +1,9 @@
 import { TaskModel } from "../models/Task.js";
 import { UserModel } from "../models/User.js";
+import { MateriaModel } from "../models/Materias.js";
 export const obtenerTodasLasTareas = async (req, res) => {
     try {
-        const TareasObtenidas = await TaskModel.findAll({include: UserModel})
+        const TareasObtenidas = await TaskModel.findAll({include: [UserModel, MateriaModel]})
         return res.status(200).json(TareasObtenidas);
     } catch (error) {
         res.status(500).json({ message: "Error en el servidor", error: error.message})
@@ -11,9 +12,7 @@ export const obtenerTodasLasTareas = async (req, res) => {
 export const ObtenerTareaPorId = async (req, res) => {
     try {
         const {id} = req.params;
-        const TareaEncontrada = await TaskModel.findByPk(id,{
-            include: UserModel
-        });
+        const TareaEncontrada = await TaskModel.findByPk(id,{include: [UserModel, MateriaModel]});
 
         if(!TareaEncontrada) {
             return res.status(404).json({
@@ -31,7 +30,7 @@ export const ObtenerTareaPorId = async (req, res) => {
 }
 export const crearTarea = async (req, res) => {
     try {
-        const {title, description, UserId, isComplete} = req.body;
+        const {title, description, UserId, isComplete, MateriaId} = req.body;
 
         if(typeof title !== "string"){
             return res.status(400).json({
@@ -87,12 +86,20 @@ export const crearTarea = async (req, res) => {
                 message: "Usuario no existe"
             })
         }
+        const MateriaEncontrada = await MateriaModel.findByPk(MateriaId);
+
+        if (!MateriaEncontrada) {
+            return res.status(404).json({
+                message: "La materia no existe"
+            });
+        }
 
         await TaskModel.create({
             title,
             description,
             UserId,
-            isComplete
+            isComplete,
+            MateriaId
         });
         return res.status(201).json({
             message: "Tarea creada con exito"
@@ -108,7 +115,7 @@ export const crearTarea = async (req, res) => {
 export const actualizarTarea = async (req, res) => {
     try {
         const {id} = req.params
-        const { title, description, UserId, isComplete } = req.body;
+        const { title, description, UserId, isComplete, MateriaId } = req.body;
 
         const TareasObtenidas = await TaskModel.findByPk(id, {include: UserModel})
 
@@ -153,11 +160,21 @@ export const actualizarTarea = async (req, res) => {
                 });
             }
         }
+        if (MateriaId !== undefined) {
+         const MateriaEncontrada = await MateriaModel.findByPk(MateriaId);
+
+         if (!MateriaEncontrada) {
+                return res.status(404).json({
+                    message: "La materia no existe"
+                });
+            }
+        }
         await TareasObtenidas.update({
             title,
             description,
             UserId,
-            isComplete
+            isComplete,
+            MateriaId
         });
         return res.status(200).json({
             message: "Tarea actualizada correctamente"

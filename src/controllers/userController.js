@@ -2,7 +2,7 @@ import { UserModel } from "../models/User.js";
 import { TaskModel } from "../models/Task.js";
 export const obtenerTodosLosUsuarios = async (req, res) => {
     try {
-        const UsuariosObtenidos = await UserModel.findAll({include: TaskModel})
+        const UsuariosObtenidos = await UserModel.findAll({include: TaskModel, attributes: {exclude: ["password"]}})
         return res.status(200).json(UsuariosObtenidos);
     } catch (error) {
         res.status(500).json({ message: "Error en el servidor"})
@@ -11,7 +11,7 @@ export const obtenerTodosLosUsuarios = async (req, res) => {
 export const ObtenerUsuarioPorId = async (req, res) => {
     try {
         const {id} = req.params;
-        const UsuarioEncontrado = await UserModel.findByPk(id, {include: TaskModel});
+        const UsuarioEncontrado = await UserModel.findByPk(id, {include: TaskModel, attributes: {exclude: ["password"]}});
 
         if(!UsuarioEncontrado) {
             return res.status(404).json({

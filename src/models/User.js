@@ -13,6 +13,11 @@ export const UserModel = sequelize.define("User",{
     },
     password: {
         type: DataTypes.STRING(100),
-        allowNull: false
+        allowNull: false}
+    },{
+    defaultScope: {
+        attributes: {
+            exclude: ["password"]
+        }
     }
-})
+});

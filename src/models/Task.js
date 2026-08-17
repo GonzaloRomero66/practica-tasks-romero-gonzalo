@@ -17,6 +17,10 @@ export const TaskModel = sequelize.define("task", {
     UserId: {
         type: DataTypes.INTEGER,
         allowNull: false        
+    },
+    MateriaId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 })
 

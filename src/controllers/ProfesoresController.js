@@ -1,24 +1,25 @@
 import { UserModel } from "../models/User.js";
 import { TaskModel } from "../models/Task.js";
-export const obtenerTodosLosUsuarios = async (req, res) => {
+import { ProfeModel } from "../models/Profesores.js";
+export const obtenerTodosLosProfesores = async (req, res) => {
     try {
-        const UsuariosObtenidos = await UserModel.findAll({include: TaskModel, attributes: {exclude: ["password"]}})
-        return res.status(200).json(UsuariosObtenidos);
+        const ProfesoresObtenidos = await ProfeModel.findAll({attributes: {exclude: ["password"]}})
+        return res.status(200).json(ProfesoresObtenidos);
     } catch (error) {
         res.status(500).json({ message: "Error en el servidor"})
     }
 }
-export const ObtenerUsuarioPorId = async (req, res) => {
+export const ObtenerProfesorPorId = async (req, res) => {
     try {
         const {id} = req.params;
-        const UsuarioEncontrado = await UserModel.findByPk(id, {include: TaskModel, attributes: {exclude: ["password"]}});
+        const ProfesorEncontrado = await ProfeModel.findByPk(id, {attributes: {exclude: ["password"]}});
 
-        if(!UsuarioEncontrado) {
+        if(!ProfesorEncontrado) {
             return res.status(404).json({
-                message: "El usuario no fue encontrado"
+                message: "El profesor no fue encontrado"
             })
         }
-        return res.status(200).json(UsuarioEncontrado)
+        return res.status(200).json(ProfesorEncontrado)
     } 
     catch {
         res.status(500).json({
@@ -29,9 +30,9 @@ export const ObtenerUsuarioPorId = async (req, res) => {
 }
 
 ///Crear usuario
-export const crearUsuario = async (req, res) => {
+export const crearProfesor = async (req, res) => {
     try {
-        const {name, email, password} = req.body;
+        const {name, email, password, speciality, UserId} = req.body;
 
         if(typeof name !== "string"){
             return res.status(400).json({
@@ -48,7 +49,7 @@ export const crearUsuario = async (req, res) => {
                 message: "El nombre debe ser menor a 20 caracteres"
             });
         }
-        const NombreBuscado = await UserModel.findOne({
+        const NombreBuscado = await ProfeModel.findOne({
             where: {name}
         })
         if(NombreBuscado){
@@ -81,13 +82,36 @@ export const crearUsuario = async (req, res) => {
                 message: "La contrasena no puede estar vacio"
             })
         }
-        await UserModel.create({
+        if (typeof speciality !== "string"){
+            return res.status(400).json({
+                message: "La especialidad debe de ser tipo caracter (string)"
+            })
+        }
+        if (speciality.trim() === ""){
+            return res.status(400).json({
+                message: "La especialidad no puede estar vacia"
+            })
+        }
+        if (speciality.length > 100){
+            return res.status(400).json({
+                message: "La especialidad debe ser menor a 100 caracteres"
+            })
+        }
+        const UsuarioEncontrado = await UserModel.findByPk(UserId)
+        if(!UsuarioEncontrado){
+            return res.status(404).json({
+                message: "El usuario indicado no existe"
+            })
+        }
+        await ProfeModel.create({
             name,
             email,
-            password
+            password,
+            speciality,
+            UserId  
         });
         return res.status(201).json({
-            message: "Usuario creado con exito"
+            message: "El profesor fue creado con exito"
         });
     }
     catch (error) {
@@ -99,14 +123,14 @@ export const crearUsuario = async (req, res) => {
 
 
 /// Actualizar Usuario
-export const actualizarUsuario = async (req, res) => {
+export const actualizarProfesor = async (req, res) => {
     try {
         const {id} = req.params
-        const { name, email, password } = req.body;
-        const UsuariosObtenidos = await UserModel.findByPk(id)
-        if(!UsuariosObtenidos){
+        const { name, email, password, speciality, UserId } = req.body;
+        const ProfesoresObtenidos = await ProfeModel.findByPk(id)
+        if(!ProfesoresObtenidos){
             return res.status(404).json({
-                message: "No existe este usuario"
+                message: "No existe este profesor"
             });
         }
         if(name !== undefined){
@@ -126,8 +150,8 @@ export const actualizarUsuario = async (req, res) => {
                 message: "El nombre debe ser menor a 20 caracteres"
             })
         }
-        if(name !== UsuariosObtenidos.name){
-           const NombreBuscado = await UserModel.findOne({
+        if(name !== ProfesoresObtenidos.name){
+           const NombreBuscado = await ProfeModel.findOne({
             where: {name}
            })
         if (NombreBuscado){
@@ -163,36 +187,52 @@ export const actualizarUsuario = async (req, res) => {
                 return res.status(400).json({
                     message: "La contrasena no puede estar vacia"
                 });
-         }
-         }
+            }}
+            
+             if (typeof speciality !== "string"){
+                return res.status(400).json({
+                message: "La especialidad debe de ser tipo caracter (string)"
+            })
+            }
+             if (speciality.trim() === ""){
+                return res.status(400).json({
+                    message: "La especialidad no puede estar vacia"
+                })
+            }
+             if (speciality.length > 100){
+                return res.status(400).json({
+                    message: "La especialidad debe ser menor a 100 caracteres"
+                })
+            }
          
-         await UsuariosObtenidos.update({
+         await ProfesoresObtenidos.update({
             name,
             email,
-            password
+            password,
+            speciality
          });
          return res.status(200).json({
-            message: "Usuario actualizado correctamente"
+            message: "Profesor actualizado correctamente"
          })
     } 
      catch (error) {
         return res.status(500).json({
-            message: "Error en el servidor"
+            message: "Error en el servidor", error: error.message
         });
     }
 }
-export const eliminarUsuario = async (req, res) => {
+export const eliminarProfesor = async (req, res) => {
     try{
         const {id} = req.params;
-        const UsuarioEncontrado = await UserModel.findByPk(id);
-    if (!UsuarioEncontrado){
+        const ProfesorEncontrado = await ProfeModel.findByPk(id);
+    if (!ProfesorEncontrado){
         return res.status(404).json({
-            message: "No existe este usuario"
+            message: "No existe este profesor"
         });
         }
-        await UsuarioEncontrado.destroy();
+        await ProfesorEncontrado.destroy();
         return res.status(200).json({
-            message: "Usuario eliminado correctamente"
+            message: "Profesor eliminado correctamente"
         })
     }
     catch (error) {

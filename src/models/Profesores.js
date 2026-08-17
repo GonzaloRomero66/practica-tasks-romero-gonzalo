@@ -21,7 +21,7 @@ export const ProfeModel = sequelize.define("profesor", {
         allowNull: false
     },
     UserId: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.INTEGER,
         allowNull: false
     }
     },

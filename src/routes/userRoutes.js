@@ -7,11 +7,13 @@ import {
     eliminarUsuario
 } from "../controllers/userController.js"
 
+import { validations, validate } from "../middlewares/validations/User.validation.js";
+
 const router = express.Router();
 
 router.get("/", obtenerTodosLosUsuarios)
 router.get("/:id", ObtenerUsuarioPorId)
-router.post("/", crearUsuario)
+router.post("/", validations, validate, crearUsuario)
 router.put("/:id", actualizarUsuario)
 router.delete("/:id", eliminarUsuario)
 

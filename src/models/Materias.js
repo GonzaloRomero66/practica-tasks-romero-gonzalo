@@ -3,7 +3,7 @@ import { sequelize } from "../config/database.js";
 
 
 export const MateriaModel = sequelize.define("materia", {
-     name: {
+    name: {
         type: DataTypes.STRING(100),
         allowNull: false
     },

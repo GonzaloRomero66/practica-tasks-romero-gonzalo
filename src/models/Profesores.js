@@ -3,7 +3,7 @@ import { sequelize } from "../config/database.js";
 
 export const ProfeModel = sequelize.define("profesor", {
     
-     name: {
+    name: {
         type: DataTypes.STRING(100),
         allowNull: false
     },

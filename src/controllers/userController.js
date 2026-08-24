@@ -32,22 +32,7 @@ export const ObtenerUsuarioPorId = async (req, res) => {
 export const crearUsuario = async (req, res) => {
     try {
         const {name, email, password} = req.body;
-
-        if(typeof name !== "string"){
-            return res.status(400).json({
-                message: "El nombre debe ser de tipo caracter (string)"
-            });
-        }
-        if(name.trim() === ""){
-            return res.status(400).json({
-                message: "El nombre no debe estar vacio"
-            });
-        }
-        if(name.length > 20){
-            return res.status(400).json({
-                message: "El nombre debe ser menor a 20 caracteres"
-            });
-        }
+        
         const NombreBuscado = await UserModel.findOne({
             where: {name}
         })
@@ -56,31 +41,7 @@ export const crearUsuario = async (req, res) => {
                 message: "El nombre ya existe"
             });
         }
-        if(typeof email !== "string"){
-            return res.status(400).json({
-                message: "El email debe de ser tipo caracter (string)"
-            });
-        }
-        if(email.trim() === ""){
-            return res.status(400).json({
-                message: "El email no puede estar vacia"
-            });
-        }
-        if(email.length > 20){
-            return res.status(400).json({
-                message: "El email debe ser menor a 20 caracteres"
-            })
-        }
-        if (typeof password !== "string"){
-            return res.status(400).json({
-                message: "La contrasena debe de ser tipo caracter (string)"
-            })
-        }
-        if (password.trim() === ""){
-            return res.status(400).json({
-                message: "La contrasena no puede estar vacio"
-            })
-        }
+
         await UserModel.create({
             name,
             email,
@@ -127,9 +88,9 @@ export const actualizarUsuario = async (req, res) => {
             })
         }
         if(name !== UsuariosObtenidos.name){
-           const NombreBuscado = await UserModel.findOne({
+        const NombreBuscado = await UserModel.findOne({
             where: {name}
-           })
+        })
         if (NombreBuscado){
             return res.status(400).json({
                 message: "El nombre ya existe"
@@ -153,29 +114,29 @@ export const actualizarUsuario = async (req, res) => {
                 message: "El email debe ser menor de 20 caracteres"
             })
         }
-         if (password !== undefined){
+        if (password !== undefined){
             if(typeof password !== "string"){
                 return res.status(400).json({
                     message: "La contrasena tiene que ser de tipo caracter (string)"
                 });
             }
-             if(password.trim() === ""){
+            if(password.trim() === ""){
                 return res.status(400).json({
                     message: "La contrasena no puede estar vacia"
                 });
-         }
-         }
-         
-         await UsuariosObtenidos.update({
+        }
+        }
+        
+        await UsuariosObtenidos.update({
             name,
             email,
             password
-         });
-         return res.status(200).json({
+        });
+        return res.status(200).json({
             message: "Usuario actualizado correctamente"
-         })
+        })
     } 
-     catch (error) {
+    catch (error) {
         return res.status(500).json({
             message: "Error en el servidor"
         });

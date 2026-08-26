@@ -41,8 +41,8 @@ export const validations = [
         .withMessage("El email tiene que ser de tipo string")
         .isEmail()
         .withMessage("El email tiene que ser un tipo de email valido")
-        .isLength({max: 20})
-        .withMessage("El email tiene que ser menor a 20 caracteres")
+        .isLength({max: 50})
+        .withMessage("El email tiene que ser menor a 50 caracteres")
         ,
     body("password")
         .notEmpty()
@@ -69,8 +69,8 @@ export const validationUpdate = [
         .withMessage("El email tiene que ser de tipo string")
         .isEmail()
         .withMessage("El email tiene que ser un tipo de email valido")
-        .isLength({max: 20})
-        .withMessage("El email tiene que ser menor a 20 caracteres")
+        .isLength({max: 50})
+        .withMessage("El email tiene que ser menor a 50 caracteres")
         ,
     body("password")
         .optional()

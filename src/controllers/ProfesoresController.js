@@ -151,9 +151,9 @@ export const actualizarProfesor = async (req, res) => {
             })
         }
         if(name !== ProfesoresObtenidos.name){
-           const NombreBuscado = await ProfeModel.findOne({
+        const NombreBuscado = await ProfeModel.findOne({
             where: {name}
-           })
+        })
         if (NombreBuscado){
             return res.status(400).json({
                 message: "El nombre ya existe"
@@ -177,45 +177,45 @@ export const actualizarProfesor = async (req, res) => {
                 message: "El email debe ser menor de 20 caracteres"
             })
         }
-         if (password !== undefined){
+        if (password !== undefined){
             if(typeof password !== "string"){
                 return res.status(400).json({
                     message: "La contrasena tiene que ser de tipo caracter (string)"
                 });
             }
-             if(password.trim() === ""){
+            if(password.trim() === ""){
                 return res.status(400).json({
                     message: "La contrasena no puede estar vacia"
                 });
             }}
             
-             if (typeof speciality !== "string"){
+            if (typeof speciality !== "string"){
                 return res.status(400).json({
                 message: "La especialidad debe de ser tipo caracter (string)"
             })
             }
-             if (speciality.trim() === ""){
+            if (speciality.trim() === ""){
                 return res.status(400).json({
                     message: "La especialidad no puede estar vacia"
                 })
             }
-             if (speciality.length > 100){
+            if (speciality.length > 100){
                 return res.status(400).json({
                     message: "La especialidad debe ser menor a 100 caracteres"
                 })
             }
-         
-         await ProfesoresObtenidos.update({
+        
+        await ProfesoresObtenidos.update({
             name,
             email,
             password,
             speciality
-         });
-         return res.status(200).json({
+        });
+        return res.status(200).json({
             message: "Profesor actualizado correctamente"
-         })
+        })
     } 
-     catch (error) {
+    catch (error) {
         return res.status(500).json({
             message: "Error en el servidor", error: error.message
         });

@@ -70,23 +70,6 @@ export const actualizarUsuario = async (req, res) => {
                 message: "No existe este usuario"
             });
         }
-        if(name !== undefined){
-            if(typeof name !== "string"){
-            return res.status(400).json({
-                message: "El nombre debe ser de tipo caracter (string)"
-            })
-        }
-            
-        if(name.trim() === ""){
-            return res.status(400).json({
-                message: "El nombre no puede estar vacio"
-            })
-        }
-        if(name.length > 20){
-            return res.status(400).json({
-                message: "El nombre debe ser menor a 20 caracteres"
-            })
-        }
         if(name !== UsuariosObtenidos.name){
         const NombreBuscado = await UserModel.findOne({
             where: {name}
@@ -95,35 +78,6 @@ export const actualizarUsuario = async (req, res) => {
             return res.status(400).json({
                 message: "El nombre ya existe"
             });
-        }
-        }}
-        if(email !== undefined){
-        if(typeof email !== "string"){
-            return res.status(400).json({
-                message: "El email debe ser de tipo caracter (string)"
-            });
-        
-            }
-        if(email.trim() === ""){
-            return res.status(400).json({
-                message: "El email no puede estar vacia"
-            });
-        }
-        if(email.length > 20)
-            return res.status(400).json({
-                message: "El email debe ser menor de 20 caracteres"
-            })
-        }
-        if (password !== undefined){
-            if(typeof password !== "string"){
-                return res.status(400).json({
-                    message: "La contrasena tiene que ser de tipo caracter (string)"
-                });
-            }
-            if(password.trim() === ""){
-                return res.status(400).json({
-                    message: "La contrasena no puede estar vacia"
-                });
         }
         }
         
@@ -135,8 +89,8 @@ export const actualizarUsuario = async (req, res) => {
         return res.status(200).json({
             message: "Usuario actualizado correctamente"
         })
-    } 
-    catch (error) {
+    
+     } catch (error) {
         return res.status(500).json({
             message: "Error en el servidor"
         });

@@ -14,7 +14,7 @@ export const validationId = [
         })
 ]
 
-export const validations = [
+export const CrearUservalidations = [
     body("name")
         .notEmpty()
         .withMessage("El nombre no puede estar vacio")

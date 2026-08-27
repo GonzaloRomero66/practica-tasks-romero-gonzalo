@@ -16,7 +16,7 @@ export const validationId = [
         })
 ]
 
-export const validations = [
+export const CrearTaskvalidations = [
     body("title")
         .notEmpty()
         .withMessage("El titulo no puede estar vacio")

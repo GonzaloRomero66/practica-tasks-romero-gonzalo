@@ -47,32 +47,6 @@ export const crearMateria = async (req, res) => {
     try {
         const { name, description, ProfeId } = req.body;
 
-        if (typeof name !== "string" || name.trim() === "") {
-            return res.status(400).json({
-                message: "El nombre de la materia es obligatorio"
-            });
-        }
-
-        if (typeof description !== "string" || description.trim() === "") {
-            return res.status(400).json({
-                message: "La descripcion de la materia es obligatoria"
-            });
-        }
-
-        if (!ProfeId) {
-            return res.status(400).json({
-                message: "El profesor es obligatorio"
-            });
-        }
-
-        const ProfesorEncontrado = await ProfeModel.findByPk(ProfeId);
-
-        if (!ProfesorEncontrado) {
-            return res.status(404).json({
-                message: "El profesor no existe"
-            });
-        }
-
         await MateriaModel.create({
             name,
             description,
@@ -103,38 +77,6 @@ export const actualizarMateria = async (req, res) => {
             return res.status(404).json({
                 message: "No existe esa materia"
             });
-        }
-
-        if (name !== undefined) {
-            if (typeof name !== "string" || name.trim() === "") {
-                return res.status(400).json({
-                    message: "El nombre de la materia es obligatorio"
-                });
-            }
-        }
-
-        if (description !== undefined) {
-            if (typeof description !== "string" || description.trim() === "") {
-                return res.status(400).json({
-                    message: "La descripcion de la materia es obligatoria"
-                });
-            }
-        }
-
-        if (ProfeId !== undefined) {
-            if (!ProfeId) {
-                return res.status(400).json({
-                    message: "El profesor es obligatorio"
-                });
-            }
-
-            const ProfesorEncontrado = await ProfeModel.findByPk(ProfeId);
-
-            if (!ProfesorEncontrado) {
-                return res.status(404).json({
-                    message: "El profesor no existe"
-                });
-            }
         }
 
         await MateriaEncontrada.update({

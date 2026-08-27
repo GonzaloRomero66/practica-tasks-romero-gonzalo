@@ -6,13 +6,14 @@ import {
     actualizarProfesor,
     eliminarProfesor
 } from "../controllers/ProfesoresController.js";
-
+import { CrearProfevalidations, validationId, validationUpdate } from "../middlewares/validations/Profesores.validation.js";
+import { validate } from "../middlewares/validate.js";
 const router = express.Router();
 
 router.get("/", obtenerTodosLosProfesores);
-router.get("/:id", ObtenerProfesorPorId);
-router.post("/", crearProfesor);
-router.put("/:id", actualizarProfesor)
-router.delete("/:id", eliminarProfesor)
+router.get("/:id", validationId, validate, ObtenerProfesorPorId);
+router.post("/", CrearProfevalidations, validate, crearProfesor);
+router.put("/:id", validationUpdate, validationId, validate, actualizarProfesor)
+router.delete("/:id", validationId, validate, eliminarProfesor)
 
 export default router;

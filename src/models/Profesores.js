@@ -30,10 +30,9 @@ export const ProfeModel = sequelize.define("profesor", {
         attributes: {
             exclude: ["password"]
         }
-    }
-},
-    {
-        paranoid: true,
-        timestamps: true
+    },
+    
+        timestamps: true,
+        paranoid: true
     }
 )

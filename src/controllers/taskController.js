@@ -33,68 +33,6 @@ export const crearTarea = async (req, res) => {
     try {
         const {title, description, UserId, isComplete, MateriaId} = req.body;
 
-        if(typeof title !== "string"){
-            return res.status(400).json({
-                message: "El titulo debe ser de tipo caracter (string)"
-            });
-        }
-        if(title.trim() === ""){
-            return res.status(400).json({
-                message: "El titulo no debe estar vacio"
-            });
-        }
-        if(title.length > 100){
-            return res.status(400).json({
-                message: "El titulo debe ser menor a 100 caracteres"
-            });
-        }
-        const tituloBuscado = await TaskModel.findOne({
-            where: {title}
-        })
-        if(tituloBuscado){
-            return res.status(400).json({
-                message: "El titulo ya existe"
-            });
-        }
-        if(typeof description !== "string"){
-            return res.status(400).json({
-                message: "La descripcion debe de ser tipo caracter (string)"
-            });
-        }
-        if(description.trim() === ""){
-            return res.status(400).json({
-                message: "La descripcion no puede estar vacia"
-            });
-        }
-        if(description.length > 100){
-            return res.status(400).json({
-                message: "La descripcion debe ser menor a 100 caracteres"
-            })
-        }
-        if(typeof isComplete !== "boolean"){
-            return res.status(400).json({
-                message: "Tarea completada debe ser de tipo boolean (true / false)"
-            })
-        }
-        if(!UserId) {
-            return res.status(400).json({
-                message: "El usuario es obligatorio"
-            })
-        }
-        const UsuarioEncontrado = await UserModel.findByPk(UserId);
-        if(!UsuarioEncontrado){
-            return res.status(404).json({
-                message: "Usuario no existe"
-            })
-        }
-        const MateriaEncontrada = await MateriaModel.findByPk(MateriaId);
-
-        if (!MateriaEncontrada) {
-            return res.status(404).json({
-                message: "La materia no existe"
-            });
-        }
-
         await TaskModel.create({
             title,
             description,

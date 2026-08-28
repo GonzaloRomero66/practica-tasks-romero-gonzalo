@@ -1,5 +1,6 @@
 import { UserModel } from "../models/User.js";
 import { TaskModel } from "../models/Task.js";
+import { matchedData } from "express-validator";
 export const obtenerTodosLosUsuarios = async (req, res) => {
     try {
         const UsuariosObtenidos = await UserModel.findAll({include: TaskModel, attributes: {exclude: ["password"]}})
@@ -63,7 +64,7 @@ export const crearUsuario = async (req, res) => {
 export const actualizarUsuario = async (req, res) => {
     try {
         const {id} = req.params
-        const { name, email, password } = req.body;
+        const datos = matchedData(req)
         const UsuariosObtenidos = await UserModel.findByPk(id)
         if(!UsuariosObtenidos){
             return res.status(404).json({
@@ -81,11 +82,7 @@ export const actualizarUsuario = async (req, res) => {
         }
         }
         
-        await UsuariosObtenidos.update({
-            name,
-            email,
-            password
-        });
+        await UsuariosObtenidos.update(datos);
         return res.status(200).json({
             message: "Usuario actualizado correctamente"
         })

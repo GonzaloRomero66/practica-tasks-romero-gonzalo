@@ -62,6 +62,14 @@ export const UservalidationUpdate = [
         .withMessage("El nombre tiene que ser de minimo 5 caracteres")
         .isString()
         .withMessage("El nombre tiene que ser de tipo string")
+        .custom(async (name, req) => {
+            const usuario = await UserModel.findOne({
+                where: {name}
+            })
+                if(usuario && usuario.id != req.params.id){
+                    throw new Error("El nombre ya existe")
+                }
+        })
         ,
     body("email")
         .optional()

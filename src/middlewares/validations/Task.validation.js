@@ -53,10 +53,8 @@ export const CrearTaskvalidations = [
     body("UserId")
         .notEmpty()
         .withMessage("El id del usuario no puede estar vacio")
-        .isInt()
-        .withMessage("El id del usuario tiene que ser un numero entero")
-        .isLength({min: 1})
-        .withMessage("El id del usuario tiene que minimo de 1 digito")
+        .isInt({min: 1})
+        .withMessage("El id del usuario tiene que ser un numero entero positivo")
         .custom(async (id) => {
             const usuario = await UserModel.findByPk(id)
             if (!usuario){
@@ -69,10 +67,8 @@ export const CrearTaskvalidations = [
     body("MateriaId")
         .notEmpty()
         .withMessage("El id de la materia no puede estar vacio")
-        .isInt()
-        .withMessage("El id de la materia tiene que ser un numero entero")
-        .isLength({min: 1})
-        .withMessage("El id de la materia tiene que minimo de 1 digito")
+        .isInt({min: 1})
+        .withMessage("El id de la materia tiene que ser un numero entero positivo")
         .custom(async (id) =>{
             const materia = await MateriaModel.findByPk(id)
             if (!materia){
@@ -92,6 +88,15 @@ export const validationUpdate = [
         .withMessage("El titulo tiene que ser de minimo 5 caracteres")
         .isString()
         .withMessage("El titulo tiene que ser de tipo string")
+        .custom(async (title, {req}) => {
+            const tarea = await TaskModel.findOne({
+                where: {title}
+            })
+            if(tarea && tarea.id != req.params.id){
+                throw new Error("La tarea ya existe")
+            }
+            return true
+        })
         ,
     body("description")
         .optional()
@@ -108,7 +113,7 @@ export const validationUpdate = [
     body("UserId")
         .optional()
         .isInt({min: 1})
-        .withMessage("El id del usuario tiene que tener minimo un digito y ser numero entero")
+        .withMessage("El id del usuario tiene que ser un numero entero positivo")
         .custom(async (id) => {
             const usuario = await UserModel.findByPk(id)
             if (!usuario){
@@ -121,7 +126,7 @@ export const validationUpdate = [
     body("MateriaId")
         .optional()
         .isInt({min: 1})
-        .withMessage("El id de la materia tiene que minimo de 1 digito y ser un numero entero")
+        .withMessage("El id de la materia tiene que ser un numero entero positivo")
         .custom(async (id) =>{
             const materia = await MateriaModel.findByPk(id)
             if (!materia){

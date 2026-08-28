@@ -58,7 +58,7 @@ export const crearProfesor = async (req, res) => {
 export const actualizarProfesor = async (req, res) => {
     try {
         const {id} = req.params
-        const datos = matchedData(datos);
+        const datos = matchedData(req);
         const ProfesoresObtenidos = await ProfeModel.findByPk(id)
         if(!ProfesoresObtenidos){
             return res.status(404).json({
@@ -66,12 +66,7 @@ export const actualizarProfesor = async (req, res) => {
             });
         }
         
-        await ProfesoresObtenidos.update({
-            name,
-            email,
-            password,
-            speciality
-        });
+        await ProfesoresObtenidos.update(datos);
         return res.status(200).json({
             message: "Profesor actualizado correctamente"
         })

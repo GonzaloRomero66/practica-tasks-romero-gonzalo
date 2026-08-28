@@ -22,7 +22,12 @@ export const TaskModel = sequelize.define("task", {
         type: DataTypes.INTEGER,
         allowNull: false
     }
-})
+},
+    {
+        timestamps: true,
+        paranoid: true
+    }   
+)
 
 
 

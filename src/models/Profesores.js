@@ -33,7 +33,7 @@ export const ProfeModel = sequelize.define("profesor", {
     }
 },
     {
-    paranoid: true,
-    timestamps: true
+        paranoid: true,
+        timestamps: true
     }
 )

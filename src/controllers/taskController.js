@@ -1,6 +1,7 @@
 import { TaskModel } from "../models/Task.js";
 import { UserModel } from "../models/User.js";
 import { MateriaModel } from "../models/Materias.js";
+import { matchedData } from "express-validator";
 export const obtenerTodasLasTareas = async (req, res) => {
     try {
         const TareasObtenidas = await TaskModel.findAll({include: [UserModel, MateriaModel]})
@@ -115,7 +116,7 @@ export const crearTarea = async (req, res) => {
 export const actualizarTarea = async (req, res) => {
     try {
         const {id} = req.params
-        const { title, description, UserId, isComplete, MateriaId } = req.body;
+        const datos = matchedData(req);
 
         const TareasObtenidas = await TaskModel.findByPk(id, {include: UserModel})
 
@@ -125,57 +126,7 @@ export const actualizarTarea = async (req, res) => {
             });
         }
 
-        if(title !== undefined){
-        if(title !== TareasObtenidas.title){
-        const tituloBuscado = await TaskModel.findOne({
-            where: {title}
-        })
-        if (tituloBuscado){
-            return res.status(400).json({
-                message: "El titulo ya existe"
-            });
-            }
-        }}
-        if(description !== undefined){
-        if(typeof description !== "string"){
-            return res.status(400).json({
-                message: "La descripcion debe ser de tipo caracter (string)"
-            });
-        
-            }
-        if(description.trim() === ""){
-            return res.status(400).json({
-                message: "La descripcion no puede estar vacia"
-            });
-        }
-        if(description.length > 100)
-            return res.status(400).json({
-                message: "La descripcion debe ser menor de 100 caracteres"
-            })
-        }
-        if (isComplete !== undefined){
-            if(typeof isComplete !== "boolean"){
-                return res.status(400).json({
-                    message: "Tarea completada debe ser de tipo boolean (true / false)"
-                });
-            }
-        }
-        if (MateriaId !== undefined) {
-         const MateriaEncontrada = await MateriaModel.findByPk(MateriaId);
-
-         if (!MateriaEncontrada) {
-                return res.status(404).json({
-                    message: "La materia no existe"
-                });
-            }
-        }
-        await TareasObtenidas.update({
-            title,
-            description,
-            UserId,
-            isComplete,
-            MateriaId
-        });
+        await TareasObtenidas.update(datos);
         return res.status(200).json({
             message: "Tarea actualizada correctamente"
         });

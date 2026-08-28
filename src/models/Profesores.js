@@ -22,7 +22,7 @@ export const ProfeModel = sequelize.define("profesor", {
     },
     UserId: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
     }
     },
     {
@@ -31,4 +31,9 @@ export const ProfeModel = sequelize.define("profesor", {
             exclude: ["password"]
         }
     }
-})
+},
+    {
+    paranoid: true,
+    timestamps: true
+    }
+)

@@ -1,6 +1,7 @@
 import { UserModel } from "../models/User.js";
 import { TaskModel } from "../models/Task.js";
 import { ProfeModel } from "../models/Profesores.js";
+import { matchedData } from "express-validator";
 export const obtenerTodosLosProfesores = async (req, res) => {
     try {
         const ProfesoresObtenidos = await ProfeModel.findAll({attributes: {exclude: ["password"]}})
@@ -57,7 +58,7 @@ export const crearProfesor = async (req, res) => {
 export const actualizarProfesor = async (req, res) => {
     try {
         const {id} = req.params
-        const { name, email, password, speciality, UserId } = req.body;
+        const datos = matchedData(datos);
         const ProfesoresObtenidos = await ProfeModel.findByPk(id)
         if(!ProfesoresObtenidos){
             return res.status(404).json({

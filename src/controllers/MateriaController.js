@@ -1,6 +1,6 @@
 import { MateriaModel } from "../models/Materias.js";
 import { ProfeModel } from "../models/Profesores.js";
-
+import { matchedData } from "express-validator";
 export const obtenerTodasLasMaterias = async (req, res) => {
     try {
         const MateriasObtenidas = await MateriaModel.findAll({
@@ -69,7 +69,7 @@ export const crearMateria = async (req, res) => {
 export const actualizarMateria = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, description, ProfeId } = req.body;
+        const datos = matchedData(req);
 
         const MateriaEncontrada = await MateriaModel.findByPk(id);
 
@@ -79,11 +79,7 @@ export const actualizarMateria = async (req, res) => {
             });
         }
 
-        await MateriaEncontrada.update({
-            name,
-            description,
-            ProfeId
-        });
+        await MateriaEncontrada.update(datos);
 
         return res.status(200).json({
             message: "Materia actualizada correctamente"

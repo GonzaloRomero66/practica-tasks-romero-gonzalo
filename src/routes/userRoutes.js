@@ -7,7 +7,7 @@ import {
     eliminarUsuario
 } from "../controllers/userController.js"
 
-import { validationUpdate, validationId, CrearUservalidations } from "../middlewares/validations/User.validation.js";
+import { validationId, CrearUservalidations, UservalidationUpdate } from "../middlewares/validations/User.validation.js";
 import { validate } from "../middlewares/validate.js";
 
 const router = express.Router();
@@ -15,7 +15,7 @@ const router = express.Router();
 router.get("/", obtenerTodosLosUsuarios)
 router.get("/:id", validationId, validate, ObtenerUsuarioPorId)
 router.post("/", CrearUservalidations, validate, crearUsuario)
-router.put("/:id", validationUpdate, validationId, validate, actualizarUsuario)
+router.put("/:id", UservalidationUpdate, validationId, validate, actualizarUsuario)
 router.delete("/:id", validationId, validate, eliminarUsuario)
 
 export default router;

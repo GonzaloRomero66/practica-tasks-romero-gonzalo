@@ -20,8 +20,8 @@ export const CrearMatevalidations = [
         .withMessage("El nombre no puede estar vacio")
         .isString()
         .withMessage("El nombre debe de ser tipo string")
-        .isLength({max: 20})
-        .withMessage("El nombre no tiene que tener mas de 20 caracteres")
+        .isLength({max: 50})
+        .withMessage("El nombre no tiene que tener mas de 50 caracteres")
         .custom(async (name) => {
             const materia = await MateriaModel.findOne({
                 where: {name}
@@ -53,13 +53,13 @@ export const CrearMatevalidations = [
             return true
         })
 ]
-export const validationUpdate = [
+export const MatevalidationUpdate = [
     body("name")
         .optional()
         .isString()
         .withMessage("El nombre debe de ser de tipo string")
-        .isLength({max: 20})
-        .withMessage("El nombre no debe de ser mas de 20 caracteres")
+        .isLength({max: 50})
+        .withMessage("El nombre no debe de ser mas de 50 caracteres")
         .custom(async (name, req) => {
             const materia = await MateriaModel.findOne({
                 where: {name}

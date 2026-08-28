@@ -53,7 +53,7 @@ export const CrearUservalidations = [
         .withMessage("La contraseña debe de ser minimo de 8 caracteres")
 ];
 
-export const validationUpdate = [
+export const UservalidationUpdate = [
         body("name")
         .optional()
         .isLength({max: 20})

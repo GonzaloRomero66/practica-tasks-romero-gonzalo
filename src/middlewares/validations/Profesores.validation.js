@@ -76,7 +76,7 @@ export const CrearProfevalidations = [
     })
 ];
 
-export const validationUpdate = [
+export const ProfevalidationUpdate = [
         body("name")
         .optional()
         .isLength({max: 20})

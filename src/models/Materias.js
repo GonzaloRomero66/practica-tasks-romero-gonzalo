@@ -13,6 +13,11 @@ export const MateriaModel = sequelize.define("materia", {
     },
     ProfeId: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
     }
-})
+    },  
+    {
+        timestamps: true,
+        paranoid: true
+    }
+)
